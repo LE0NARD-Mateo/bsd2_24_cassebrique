@@ -3,6 +3,7 @@ package cassebrique.models;
 import cassebrique.CasseBrique;
 
 import java.awt.*;
+import java.util.Random;
 
 public class Balle extends Rond {
 
@@ -69,6 +70,19 @@ public class Balle extends Rond {
 
             brique.setResistance(brique.getResistance()-1);
             if(brique.resistance == 0){
+                Random random = new Random();
+                int chance = random.nextInt(100);
+
+                if (chance < 10) {
+
+                    Bonus bonus = new Bonus();
+
+                    bonus.setMalus(random.nextBoolean());
+
+                    bonus.setType(random.nextBoolean() ? bonus.TYPE_VITESSE : bonus.TYPE_TAILLE);
+                    //rajout d'une fonction pour rajouter un bonus dans une liste
+                }
+
             return true;
             }
             return false;

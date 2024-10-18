@@ -35,14 +35,7 @@ public class Brique extends Rectangle {
     @Override
     public void dessiner(Graphics2D dessin) {
         this.couleur = assignColorBasedOnResistance();
-
-
         super.dessiner(dessin);
-        dessin.setColor(couleur);
-        dessin.fillRect(x, y, largeur, hauteur);
-
-        dessin.setColor(Color.BLACK);
-        dessin.drawRect(x, y, largeur, hauteur);
     }
 
     public int getResistance() {

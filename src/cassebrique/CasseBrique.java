@@ -15,6 +15,7 @@ public class CasseBrique extends Canvas implements KeyListener {
     public JFrame fenetre = new JFrame();
     public ArrayList<Balle> listeBalle = new ArrayList<>();
     public ArrayList<Brique> listeBrique = new ArrayList<>();
+    public ArrayList<Bonus> listeBonus = new ArrayList<>();
     public Barre barre;
 
     public static final int LARGEUR = 500;
@@ -89,6 +90,8 @@ public class CasseBrique extends Canvas implements KeyListener {
                 balle.collisionBarre(barre);
                 balle.dessiner(dessin);
             }
+
+            //liste bonus à faire apparaitre et disparaitre baser sur la collision
 
             if(toucheDroite){
                 barre.deplacementDroite();
