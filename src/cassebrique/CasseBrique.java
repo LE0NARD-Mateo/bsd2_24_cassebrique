@@ -20,6 +20,9 @@ public class CasseBrique extends Canvas implements KeyListener {
     public static final int LARGEUR = 500;
     public static final int HAUTEUR = 700;
 
+    public boolean toucheDroite = false;
+    public boolean toucheGauche = false;
+
     public CasseBrique() throws InterruptedException {
 
         this.fenetre.setSize(LARGEUR, HAUTEUR);
@@ -38,7 +41,6 @@ public class CasseBrique extends Canvas implements KeyListener {
         this.fenetre.setResizable(false);
         this.fenetre.requestFocus();
         this.fenetre.addKeyListener(this);
-
         this.fenetre.setVisible(true);
         this.createBufferStrategy(2);
 
@@ -48,21 +50,18 @@ public class CasseBrique extends Canvas implements KeyListener {
     public void lancerUnePartie() throws InterruptedException {
 
         listeBalle = new ArrayList<>();
-        listeBalle.add(new Balle(100,100,3,4));
-        listeBalle.add(new Balle(200,100,2,3));
-        listeBalle.add(new Balle(100,200,1,2));
+        listeBalle.add(new Balle());
 
         barre = new Barre(
                 CasseBrique.LARGEUR / 2 - Barre.largeurDefaut / 2,
                 CasseBrique.HAUTEUR - 100);
 
         listeBrique = new ArrayList<>();
-        for (int indexLigne = 0; indexLigne < 5; indexLigne ++) {
-            for (int indexColonne = 0; indexColonne < 7; indexColonne ++) {
+        for (int indexLigne = 0; indexLigne < 5; indexLigne++) {
+            for (int indexColonne = 0; indexColonne < 7; indexColonne++) {
                 Brique brique = new Brique(
                         indexColonne * (Brique.largeurDefaut + 2),
-                        indexLigne * (Brique.hauteurDefaut + 2),
-                        Color.CYAN);
+                        indexLigne * (Brique.hauteurDefaut + 2));
                 listeBrique.add(brique);
             }
         }
@@ -81,7 +80,22 @@ public class CasseBrique extends Canvas implements KeyListener {
 
             for(Balle balle : listeBalle) {
                 balle.deplacer();
+                for (int j = listeBrique.size() - 1; j >= 0; j--) {
+                    Brique brique = listeBrique.get(j);
+                    if(balle.collisionBrique(brique)){
+                        listeBrique.remove(j);
+                    }
+                }
+                balle.collisionBarre(barre);
                 balle.dessiner(dessin);
+            }
+
+            if(toucheDroite){
+                barre.deplacementDroite();
+            }
+
+            if(toucheGauche){
+                barre.deplacementGauche();
             }
 
             barre.dessiner(dessin);
@@ -109,17 +123,22 @@ public class CasseBrique extends Canvas implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            barre.deplacementDroite();
-        }
 
+        if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            toucheDroite = true;
+        }
         if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-            barre.deplacementGauche();
+            toucheGauche = true;
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-
+        if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            toucheDroite = false;
+        }
+        if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+            toucheGauche = false;
+        }
     }
 }

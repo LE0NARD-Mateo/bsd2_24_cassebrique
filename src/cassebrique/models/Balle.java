@@ -4,18 +4,17 @@ import cassebrique.CasseBrique;
 
 import java.awt.*;
 
-public class Balle extends Sprite {
+public class Balle extends Rond {
 
     protected int vitesseX;
     protected int vitesseY;
-    protected int diametre = 20;
 
     public Balle() {
         super();
         this.x = this.nombreAleatoire(diametre,CasseBrique.LARGEUR - diametre);
         this.y = this.nombreAleatoire(400,500);
-        this.vitesseX = 3;
-        this.vitesseY = -3;
+        this.vitesseX = 5;
+        this.vitesseY = -5;
         this.couleur = new Color(ratioAleatoire(), ratioAleatoire(), ratioAleatoire(0.4f,0.7f));
     }
 
@@ -60,13 +59,30 @@ public class Balle extends Sprite {
         if(y >= CasseBrique.HAUTEUR - diametre || y <= 0) {
             vitesseY = -vitesseY;
         }
+
     }
 
-    public void dessiner(Graphics2D dessin) {
-        dessin.setColor(couleur);
-        dessin.fillOval(x,y,diametre,diametre);
+    public boolean collisionBrique(Brique brique){
+        if ((x + diametre >= brique.x) && (x <= brique.x + Brique.largeurDefaut) &&
+                (y + diametre >= brique.y) && (y <= brique.y + Brique.hauteurDefaut)) {
+            vitesseY = -vitesseY;
+
+            brique.setResistance(brique.getResistance()-1);
+            if(brique.resistance == 0){
+            return true;
+            }
+            return false;
+        }
+        return false;
     }
 
+    public boolean collisionBarre(Barre barre) {
+        if ((x + diametre >= barre.x) && (x <= barre.x + Barre.largeurDefaut) &&
+                (y + diametre >= barre.y) && (y <= barre.y + Barre.hauteurDefaut)) {
+            vitesseY = -vitesseY;
+        }
+        return false;
+    }
 
     public int getX() {
         return x;
@@ -100,13 +116,6 @@ public class Balle extends Sprite {
         this.vitesseY = vitesseY;
     }
 
-    public int getDiametre() {
-        return diametre;
-    }
-
-    public void setDiametre(int diametre) {
-        this.diametre = diametre;
-    }
 
     public Color getCouleur() {
         return couleur;
