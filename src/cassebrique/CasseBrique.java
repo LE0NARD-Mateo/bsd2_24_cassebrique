@@ -3,6 +3,7 @@ package cassebrique;
 import cassebrique.models.Balle;
 import cassebrique.models.Barre;
 import cassebrique.models.Brique;
+import cassebrique.models.Sprite;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,6 +16,7 @@ public class CasseBrique extends Canvas implements KeyListener {
     public JFrame fenetre = new JFrame();
     public ArrayList<Balle> listeBalle = new ArrayList<>();
     public ArrayList<Brique> listeBrique = new ArrayList<>();
+    public ArrayList<Sprite> listeSprite = new ArrayList<>();
     public Barre barre;
 
     public static final int LARGEUR = 500;
@@ -52,9 +54,15 @@ public class CasseBrique extends Canvas implements KeyListener {
         listeBalle.add(new Balle(200,100,2,3));
         listeBalle.add(new Balle(100,200,1,2));
 
+        listeSprite.add(listeBalle.get(0));
+        listeSprite.add(listeBalle.get(1));
+        listeSprite.add(listeBalle.get(2));
+
         barre = new Barre(
                 CasseBrique.LARGEUR / 2 - Barre.largeurDefaut / 2,
                 CasseBrique.HAUTEUR - 100);
+
+        listeSprite.add(barre);
 
         listeBrique = new ArrayList<>();
         for (int indexLigne = 0; indexLigne < 5; indexLigne ++) {
@@ -64,6 +72,7 @@ public class CasseBrique extends Canvas implements KeyListener {
                         indexLigne * (Brique.hauteurDefaut + 2),
                         Color.CYAN);
                 listeBrique.add(brique);
+                listeSprite.add(brique);
             }
         }
 
@@ -81,13 +90,10 @@ public class CasseBrique extends Canvas implements KeyListener {
 
             for(Balle balle : listeBalle) {
                 balle.deplacer();
-                balle.dessiner(dessin);
             }
 
-            barre.dessiner(dessin);
-
-            for(Brique brique : listeBrique) {
-                brique.dessiner(dessin);
+            for(Sprite sprite : listeSprite) {
+                sprite.dessiner(dessin);
             }
 
             dessin.dispose();
