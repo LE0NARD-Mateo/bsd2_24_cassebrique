@@ -3,23 +3,20 @@ package cassebrique.models;
 import cassebrique.CasseBrique;
 
 import java.awt.*;
-<<<<<<< HEAD
-import java.util.Random;
-=======
 import java.util.ArrayList;
->>>>>>> 5061b7324f3c893c1323791da569e948703e5368
 
-public class Balle extends Rond {
+public class Balle extends Sprite {
 
     protected int vitesseX;
     protected int vitesseY;
+    protected int diametre = 20;
 
     public Balle() {
         super();
         this.x = this.nombreAleatoire(diametre,CasseBrique.LARGEUR - diametre);
         this.y = this.nombreAleatoire(400,500);
-        this.vitesseX = 5;
-        this.vitesseY = -5;
+        this.vitesseX = 3;
+        this.vitesseY = -3;
         this.couleur = new Color(ratioAleatoire(), ratioAleatoire(), ratioAleatoire(0.4f,0.7f));
     }
 
@@ -53,9 +50,9 @@ public class Balle extends Rond {
 
             //est ce que l'un des coin de la balle se trouve dans le Rectangle testé
             if((x1Balle > x1Rectangle && x1Balle < x2Rectangle && y1Balle > y1Rectangle && y1Balle < y2Rectangle)
-            || (x2Balle > x1Rectangle && x2Balle < x2Rectangle && y1Balle > y1Rectangle && y1Balle < y2Rectangle)
-            || (x1Balle > x1Rectangle && x1Balle < x2Rectangle && y2Balle > y1Rectangle && y2Balle < y2Rectangle)
-            || (x2Balle > x1Rectangle && x2Balle < x2Rectangle && y2Balle > y1Rectangle && y2Balle < y2Rectangle)){
+                    || (x2Balle > x1Rectangle && x2Balle < x2Rectangle && y1Balle > y1Rectangle && y1Balle < y2Rectangle)
+                    || (x1Balle > x1Rectangle && x1Balle < x2Rectangle && y2Balle > y1Rectangle && y2Balle < y2Rectangle)
+                    || (x2Balle > x1Rectangle && x2Balle < x2Rectangle && y2Balle > y1Rectangle && y2Balle < y2Rectangle)){
                 // il y a une collision
                 int distanceDroite = Math.abs(x2Balle - x1Rectangle);
                 int distanceGauche = Math.abs(x1Balle - x2Rectangle);
@@ -107,43 +104,13 @@ public class Balle extends Rond {
         if(y >= CasseBrique.HAUTEUR - diametre || y <= 0) {
             vitesseY = -vitesseY;
         }
-
     }
 
-    public boolean collisionBrique(Brique brique){
-        if ((x + diametre >= brique.x) && (x <= brique.x + Brique.largeurDefaut) &&
-                (y + diametre >= brique.y) && (y <= brique.y + Brique.hauteurDefaut)) {
-            vitesseY = -vitesseY;
-
-            brique.setResistance(brique.getResistance()-1);
-            if(brique.resistance == 0){
-                Random random = new Random();
-                int chance = random.nextInt(100);
-
-                if (chance < 10) {
-
-                    Bonus bonus = new Bonus();
-
-                    bonus.setMalus(random.nextBoolean());
-
-                    bonus.setType(random.nextBoolean() ? bonus.TYPE_VITESSE : bonus.TYPE_TAILLE);
-                    //rajout d'une fonction pour rajouter un bonus dans une liste
-                }
-
-            return true;
-            }
-            return false;
-        }
-        return false;
+    public void dessiner(Graphics2D dessin) {
+        dessin.setColor(couleur);
+        dessin.fillOval(x,y,diametre,diametre);
     }
 
-    public boolean collisionBarre(Barre barre) {
-        if ((x + diametre >= barre.x) && (x <= barre.x + Barre.largeurDefaut) &&
-                (y + diametre >= barre.y) && (y <= barre.y + Barre.hauteurDefaut)) {
-            vitesseY = -vitesseY;
-        }
-        return false;
-    }
 
     public int getX() {
         return x;
@@ -177,6 +144,13 @@ public class Balle extends Rond {
         this.vitesseY = vitesseY;
     }
 
+    public int getDiametre() {
+        return diametre;
+    }
+
+    public void setDiametre(int diametre) {
+        this.diametre = diametre;
+    }
 
     public Color getCouleur() {
         return couleur;
