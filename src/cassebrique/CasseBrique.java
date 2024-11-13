@@ -1,8 +1,6 @@
 package cassebrique;
 
-import cassebrique.models.Balle;
-import cassebrique.models.Barre;
-import cassebrique.models.Brique;
+import cassebrique.models.*;
 
 import javax.swing.*;
 import java.awt.*;
