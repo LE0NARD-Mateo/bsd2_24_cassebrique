@@ -3,6 +3,7 @@ package cassebrique;
 import cassebrique.models.Balle;
 import cassebrique.models.Barre;
 import cassebrique.models.Brique;
+import cassebrique.models.Sprite;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +16,11 @@ public class CasseBrique extends Canvas implements KeyListener {
     public JFrame fenetre = new JFrame();
     public ArrayList<Balle> listeBalle = new ArrayList<>();
     public ArrayList<Brique> listeBrique = new ArrayList<>();
+<<<<<<< HEAD
     public ArrayList<Bonus> listeBonus = new ArrayList<>();
+=======
+    public ArrayList<Sprite> listeSprite = new ArrayList<>();
+>>>>>>> 5061b7324f3c893c1323791da569e948703e5368
     public Barre barre;
 
     public static final int LARGEUR = 500;
@@ -53,9 +58,15 @@ public class CasseBrique extends Canvas implements KeyListener {
         listeBalle = new ArrayList<>();
         listeBalle.add(new Balle());
 
+        listeSprite.add(listeBalle.get(0));
+        listeSprite.add(listeBalle.get(1));
+        listeSprite.add(listeBalle.get(2));
+
         barre = new Barre(
                 CasseBrique.LARGEUR / 2 - Barre.largeurDefaut / 2,
                 CasseBrique.HAUTEUR - 100);
+
+        listeSprite.add(barre);
 
         listeBrique = new ArrayList<>();
         for (int indexLigne = 0; indexLigne < 5; indexLigne++) {
@@ -64,6 +75,7 @@ public class CasseBrique extends Canvas implements KeyListener {
                         indexColonne * (Brique.largeurDefaut + 2),
                         indexLigne * (Brique.hauteurDefaut + 2));
                 listeBrique.add(brique);
+                listeSprite.add(brique);
             }
         }
 
@@ -81,6 +93,7 @@ public class CasseBrique extends Canvas implements KeyListener {
 
             for(Balle balle : listeBalle) {
                 balle.deplacer();
+<<<<<<< HEAD
                 for (int j = listeBrique.size() - 1; j >= 0; j--) {
                     Brique brique = listeBrique.get(j);
                     if(balle.collisionBrique(brique)){
@@ -105,6 +118,12 @@ public class CasseBrique extends Canvas implements KeyListener {
 
             for(Brique brique : listeBrique) {
                 brique.dessiner(dessin);
+=======
+            }
+
+            for(Sprite sprite : listeSprite) {
+                sprite.dessiner(dessin);
+>>>>>>> 5061b7324f3c893c1323791da569e948703e5368
             }
 
             dessin.dispose();
