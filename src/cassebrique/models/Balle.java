@@ -3,6 +3,7 @@ package cassebrique.models;
 import cassebrique.CasseBrique;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Balle extends Sprite {
 
@@ -33,6 +34,49 @@ public class Balle extends Sprite {
         this.vitesseX = vitesseX;
         this.vitesseY = vitesseY;
         this.couleur = couleur;
+    }
+
+    public Collision detecteCollision(ArrayList<Rectangle> listeRectangle) {
+        int x1Balle = x;
+        int x2Balle = x + diametre;
+        int y1Balle = y;
+        int y2Balle =y + diametre;
+
+        for (Rectangle rectangle : listeRectangle) {
+            int x1Rectangle = rectangle.x;
+            int x2Rectangle = rectangle.x + rectangle.largeur;
+            int y1Rectangle = rectangle.y;
+            int y2Rectangle =rectangle.y + rectangle.hauteur;
+
+            //est ce que l'un des coin de la balle se trouve dans le Rectangle testé
+            if((x1Balle > x1Rectangle && x1Balle < x2Rectangle && y1Balle > y1Rectangle && y1Balle < y2Rectangle)
+            || (x2Balle > x1Rectangle && x2Balle < x2Rectangle && y1Balle > y1Rectangle && y1Balle < y2Rectangle)
+            || (x1Balle > x1Rectangle && x1Balle < x2Rectangle && y2Balle > y1Rectangle && y2Balle < y2Rectangle)
+            || (x2Balle > x1Rectangle && x2Balle < x2Rectangle && y2Balle > y1Rectangle && y2Balle < y2Rectangle)){
+                // il y a une collision
+                int distanceDroite = Math.abs(x2Balle - x1Rectangle);
+                int distanceGauche = Math.abs(x1Balle - x2Rectangle);
+                int distanceHaut = Math.abs(y1Balle - y2Rectangle);
+                int distanceBas = Math.abs(y2Balle - y1Rectangle);
+
+                int plusPetiteDistance = Math.min(
+                        distanceDroite,Math.min(
+                                distanceGauche,Math.min(
+                                        distanceHaut,distanceBas)));
+
+                if(plusPetiteDistance == distanceDroite) {
+                    return new Collision(rectangle, "droite");
+                } else if(plusPetiteDistance == distanceGauche) {
+                    return new Collision(rectangle, "gauche");
+                } else if(plusPetiteDistance == distanceHaut) {
+                    return new Collision(rectangle, "haut");
+                } else  {
+                    return new Collision(rectangle, "bas");
+                }
+            }
+        }
+
+        return null;
     }
 
     protected float ratioAleatoire(float min, float max) {
